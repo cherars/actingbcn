@@ -52,6 +52,19 @@ img {
   max-width: 100%;
 }
 
+.layout-shell {
+  width: 100%;
+  max-width: var(--layout-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--layout-gap);
+}
+
 :focus-visible {
   outline: 2px solid currentcolor;
   outline-offset: 4px;

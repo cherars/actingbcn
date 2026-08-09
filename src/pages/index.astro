@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import CourseCard from "../components/CourseCard.astro";
+import BrandLogo from "../components/BrandLogo.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import scene1 from "../assets/images/hero/scene-1.jpg";
@@ -50,8 +51,14 @@ const structuredData = {
         }
       </div>
       <div class="hero-shade"></div>
-      <p class="eyebrow">Независимый театрально-образовательный проект</p>
-      <div class="hero-content">
+      <div class="hero-topbar layout-shell">
+        <BrandLogo class="hero-logo" />
+        <p class="eyebrow">Независимый театрально-образовательный проект</p>
+        <div class="hero-progress" aria-hidden="true">
+          <span>01</span><div></div><span>04</span>
+        </div>
+      </div>
+      <div class="hero-content layout-shell layout-grid">
         <h1>Актерская<br />Барселона</h1>
         <div class="hero-action">
           <p>Пространство, где можно творить и не бояться пробовать новое</p>
@@ -60,22 +67,21 @@ const structuredData = {
           </a>
         </div>
       </div>
-      <div class="hero-progress" aria-hidden="true">
-        <span>01</span><div></div><span>04</span>
-      </div>
     </section>
 
     <section class="courses-section" id="courses">
-      <header class="section-heading">
-        <h2>Найди свой формат</h2>
-        <p>Выбери курс, с которого хочется начать</p>
-      </header>
-      <div class="course-grid">
-        {
-          courses.map((course, index) => (
-            <CourseCard course={course} number={index + 1} />
-          ))
-        }
+      <div class="courses-section__inner layout-shell">
+        <header class="section-heading layout-grid">
+          <h2>Найди свой формат</h2>
+          <p>Выбери курс, с которого хочется начать</p>
+        </header>
+        <div class="course-grid layout-grid">
+          {
+            courses.map((course, index) => (
+              <CourseCard course={course} number={index + 1} />
+            ))
+          }
+        </div>
       </div>
     </section>
 

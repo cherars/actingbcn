@@ -4,6 +4,7 @@ import BaseLayout from "./BaseLayout.astro";
 import CourseFacts from "../components/CourseFacts.astro";
 import CourseHero from "../components/CourseHero.astro";
 import RequestSection from "../components/RequestSection.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import SiteNav from "../components/SiteNav.astro";
 import TeacherCard from "../components/TeacherCard.astro";
 
@@ -61,7 +62,7 @@ const structuredData = [
     <SiteNav />
     <CourseHero course={course} />
 
-    <section class="detail-body">
+    <section class="detail-body layout-shell layout-grid">
       <div class="detail-story">
         <p class="section-index">{course.data.sectionLabel}</p>
         {course.data.story.map((paragraph) => <p>{paragraph}</p>)}
@@ -71,13 +72,13 @@ const structuredData = [
 
     {
       teachers.length > 0 && (
-        <section class="teachers-section">
+        <section class="teachers-section layout-shell">
           <header class="teachers-heading">
             <h2>{teachers.length > 1 ? "Педагоги курса" : "Педагог"}</h2>
           </header>
           <div
             class:list={[
-              "teachers-grid",
+              "teachers-grid layout-grid",
               { "teachers-grid--single": teachers.length === 1 },
             ]}
           >
@@ -90,5 +91,6 @@ const structuredData = [
     }
 
     <RequestSection />
+    <SiteFooter />
   </main>
 </BaseLayout>

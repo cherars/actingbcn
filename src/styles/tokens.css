@@ -23,8 +23,8 @@
 
   --page-gutter: clamp(1.25rem, 5vw, 5rem);
   --section-space: clamp(4.5rem, 10vw, 9.375rem);
-  --content-wide: 93.75rem;
-  --content-body: 87.5rem;
+  --layout-max: 93.75rem;
+  --layout-gap: clamp(1.25rem, 3vw, 2.75rem);
   --tap-size: 2.75rem;
   --transition-fast: 180ms ease;
   --transition-image: 700ms cubic-bezier(0.2, 0.7, 0.2, 1);

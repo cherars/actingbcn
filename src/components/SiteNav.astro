@@ -1,7 +1,13 @@
+---
+import BrandLogo from "./BrandLogo.astro";
+---
+
 <nav class="detail-nav" aria-label="Навигация по курсам">
-  <a href="/" class="wordmark" aria-label="Актерская Барселона — главная">АБ</a>
-  <a href="/#courses" class="back-link">
-    <span aria-hidden="true">←</span>
-    Все курсы
-  </a>
+  <div class="detail-nav__inner layout-shell">
+    <BrandLogo class="wordmark" />
+    <a href="/#courses" class="back-link">
+      <span aria-hidden="true">←</span>
+      Все курсы
+    </a>
+  </div>
 </nav>
