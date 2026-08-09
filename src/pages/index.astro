@@ -1,0 +1,84 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import CourseCard from "../components/CourseCard.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import scene1 from "../assets/images/hero/scene-1.jpg";
+import scene2 from "../assets/images/hero/scene-2.jpg";
+import scene3 from "../assets/images/hero/scene-3.jpg";
+import scene4 from "../assets/images/hero/scene-4.jpg";
+
+const courses = (await getCollection("courses")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const heroScenes = [scene1, scene2, scene3, scene4];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Актерская Барселона",
+  description: "Независимый театрально-образовательный проект в Барселоне.",
+  url: new URL("/", Astro.site).href,
+  sameAs: ["https://t.me/actingbcn"],
+};
+---
+
+<BaseLayout
+  title="Актерская Барселона"
+  description="Независимый театрально-образовательный проект в Барселоне."
+  structuredData={structuredData}
+>
+  <main id="main-content">
+    <section class="hero" id="top">
+      <div class="hero-slideshow" aria-hidden="true">
+        {
+          heroScenes.map((scene, index) => (
+            <div class="hero-frame" style={`animation-delay: ${index * 6}s`}>
+              <Image
+                src={scene}
+                alt=""
+                widths={[768, 1280, 1920]}
+                sizes="100vw"
+                format="webp"
+                quality={78}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
+                decoding={index === 0 ? "sync" : "async"}
+              />
+            </div>
+          ))
+        }
+      </div>
+      <div class="hero-shade"></div>
+      <p class="eyebrow">Независимый театрально-образовательный проект</p>
+      <div class="hero-content">
+        <h1>Актерская<br />Барселона</h1>
+        <div class="hero-action">
+          <p>Пространство, где можно творить и не бояться пробовать новое</p>
+          <a class="button button-primary" href="#courses">
+            Выбрать курс <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-progress" aria-hidden="true">
+        <span>01</span><div></div><span>04</span>
+      </div>
+    </section>
+
+    <section class="courses-section" id="courses">
+      <header class="section-heading">
+        <h2>Найди свой формат</h2>
+        <p>Выбери курс, с которого хочется начать</p>
+      </header>
+      <div class="course-grid">
+        {
+          courses.map((course, index) => (
+            <CourseCard course={course} number={index + 1} />
+          ))
+        }
+      </div>
+    </section>
+
+    <SiteFooter />
+  </main>
+</BaseLayout>

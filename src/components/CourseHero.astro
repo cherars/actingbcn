@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  course: CollectionEntry<"courses">;
+}
+
+const { course } = Astro.props;
+---
+
+<header class="detail-hero">
+  <div class="detail-image-wrap">
+    <Image
+      src={course.data.heroImage}
+      alt={course.data.heroAlt}
+      class="detail-image"
+      widths={[720, 1080, 1440]}
+      sizes="(max-width: 900px) 100vw, 45vw"
+      format="webp"
+      quality={82}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="detail-title">
+    <p class="course-type">{course.data.type}</p>
+    <h1>{course.data.title}</h1>
+    <p class="detail-intro">{course.data.intro}</p>
+  </div>
+</header>

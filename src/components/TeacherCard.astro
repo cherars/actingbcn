@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  teacher: CollectionEntry<"teachers">;
+}
+
+const { teacher } = Astro.props;
+---
+
+<article
+  class="teacher-card"
+  style={`--teacher-position: ${teacher.data.objectPosition}`}
+>
+  <Image
+    src={teacher.data.image}
+    alt={teacher.data.imageAlt}
+    widths={[480, 720, 960]}
+    sizes="(max-width: 760px) 100vw, 34vw"
+    format="webp"
+    quality={80}
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="teacher-copy">
+    <p class="course-type">{teacher.data.role}</p>
+    <h3>{teacher.data.name}</h3>
+    <p>{teacher.data.bio}</p>
+  </div>
+</article>

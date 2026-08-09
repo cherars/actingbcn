@@ -1,0 +1,41 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  course: CollectionEntry<"courses">;
+  number: number;
+}
+
+const { course, number } = Astro.props;
+const isLight = course.id === "custom";
+---
+
+<article class:list={["course-card", { "course-card--light": isLight }]}>
+  <div class="course-image-wrap">
+    <Image
+      class="course-image"
+      src={course.data.heroImage}
+      alt=""
+      widths={[480, 720, 960]}
+      sizes="(max-width: 520px) 100vw, (max-width: 760px) 46vw, 40vw"
+      format="webp"
+      quality={78}
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="course-number">{String(number).padStart(2, "0")}</span>
+  </div>
+  <div class="course-card-copy">
+    <div>
+      <p class="course-type">{course.data.type}</p>
+      <h3>{course.data.title}</h3>
+    </div>
+    <div class="course-card-footer">
+      <p>{course.data.cardCaption}</p>
+      <a class="button button-card" href={`/courses/${course.id}/`}>
+        Подробнее <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</article>
