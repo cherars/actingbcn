@@ -1,0 +1,39 @@
+{
+  "name": "akterskaya-barcelona",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.16.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:css": "stylelint 'src/styles/**/*.css'",
+    "lint:html": "html-validate 'dist/**/*.html'",
+    "lint": "pnpm lint:css && pnpm lint:html",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
+    "ci": "pnpm format:check && pnpm build && pnpm lint && pnpm test:e2e"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "7.2.0",
+    "sharp": "0.35.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.62.1",
+    "html-validate": "11.6.2",
+    "prettier": "3.9.6",
+    "prettier-plugin-astro": "0.14.1",
+    "stylelint": "17.14.1",
+    "stylelint-config-standard": "40.0.0",
+    "typescript": "6.0.3"
+  }
+}

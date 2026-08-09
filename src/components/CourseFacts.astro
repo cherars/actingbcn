@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Facts = CollectionEntry<"courses">["data"]["facts"];
+
+interface Props {
+  facts: Facts;
+  offer?: string;
+}
+
+const { facts, offer } = Astro.props;
+---
+
+<aside class="course-facts" aria-label="Условия">
+  <dl class="course-facts__list">
+    {
+      facts.map((fact) => (
+        <>
+          <dt>{fact.label}</dt>
+          <dd>
+            {fact.lines.map((line, index) => (
+              <>
+                {fact.datetime && index === 0 ? (
+                  <time datetime={fact.datetime}>{line}</time>
+                ) : (
+                  line
+                )}
+                {index < fact.lines.length - 1 && <br />}
+              </>
+            ))}
+          </dd>
+        </>
+      ))
+    }
+  </dl>
+  {offer && <p class="course-offer">{offer}</p>}
+  <a class="button button-dark" href="#request">
+    Выбрать этот курс <span aria-hidden="true">↓</span>
+  </a>
+</aside>

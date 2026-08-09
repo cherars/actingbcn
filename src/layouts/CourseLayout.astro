@@ -1,0 +1,94 @@
+---
+import { getEntries, type CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import CourseFacts from "../components/CourseFacts.astro";
+import CourseHero from "../components/CourseHero.astro";
+import RequestSection from "../components/RequestSection.astro";
+import SiteNav from "../components/SiteNav.astro";
+import TeacherCard from "../components/TeacherCard.astro";
+
+interface Props {
+  course: CollectionEntry<"courses">;
+}
+
+const { course } = Astro.props;
+const teachers = await getEntries(course.data.teachers);
+const canonical = new URL(`/courses/${course.id}/`, Astro.site);
+const image = new URL("/social-card.jpg", Astro.site);
+const schemaType = course.data.kind === "service" ? "Service" : "Course";
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    name: course.data.title,
+    description: course.data.seoDescription,
+    url: canonical.href,
+    image: image.href,
+    provider: {
+      "@type": "Organization",
+      name: "Актерская Барселона",
+      url: new URL("/", Astro.site).href,
+      sameAs: ["https://t.me/actingbcn"],
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Курсы",
+        item: new URL("/#courses", Astro.site).href,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: course.data.title,
+        item: canonical.href,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={course.data.title}
+  description={course.data.seoDescription}
+  structuredData={structuredData}
+>
+  <main class="course-page" id="main-content">
+    <SiteNav />
+    <CourseHero course={course} />
+
+    <section class="detail-body">
+      <div class="detail-story">
+        <p class="section-index">{course.data.sectionLabel}</p>
+        {course.data.story.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <CourseFacts facts={course.data.facts} offer={course.data.offer} />
+    </section>
+
+    {
+      teachers.length > 0 && (
+        <section class="teachers-section">
+          <header class="teachers-heading">
+            <h2>{teachers.length > 1 ? "Педагоги курса" : "Педагог"}</h2>
+          </header>
+          <div
+            class:list={[
+              "teachers-grid",
+              { "teachers-grid--single": teachers.length === 1 },
+            ]}
+          >
+            {teachers.map((teacher) => (
+              <TeacherCard teacher={teacher} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <RequestSection courseTitle={course.data.title} />
+  </main>
+</BaseLayout>

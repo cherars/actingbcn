@@ -1,0 +1,29 @@
+---
+interface Props {
+  courseTitle?: string;
+}
+
+const { courseTitle } = Astro.props;
+const message = courseTitle
+  ? `Напишите нам в Telegram название курса «${courseTitle}» и пару слов о себе. Мы ответим с подробностями и поможем забронировать место.`
+  : "Напишите нам в Telegram и расскажите, какой формат вам интересен. Мы поможем выбрать подходящий курс.";
+---
+
+<section class="request-section" id="request">
+  <p class="section-index">Следующий шаг</p>
+  <div>
+    <h2>Готовы попробовать?</h2>
+    <p class="request-copy">{message}</p>
+  </div>
+  <div class="request-actions">
+    <a
+      class="button button-primary"
+      href="https://t.me/actingbcn"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Написать в Telegram <span aria-hidden="true">↗</span>
+    </a>
+    <a class="request-back-link" href="/#courses">Посмотреть другие курсы</a>
+  </div>
+</section>
