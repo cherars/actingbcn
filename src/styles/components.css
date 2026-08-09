@@ -34,6 +34,20 @@
   color: var(--color-brand);
 }
 
+/* Contextual CTA variant for brand-colored surfaces. */
+.button-on-brand {
+  border-color: var(--color-paper);
+  background: var(--color-paper);
+  color: var(--color-brand);
+}
+
+.button-on-brand:hover,
+.button-on-brand:focus-visible {
+  border-color: var(--color-paper);
+  background: var(--color-brand);
+  color: var(--color-paper);
+}
+
 .course-type,
 .section-index {
   margin: 0;

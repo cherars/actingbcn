@@ -137,6 +137,36 @@ for (const course of coursePaths) {
   });
 }
 
+test("request CTA uses the shared on-brand variant and follows its column", async ({
+  page,
+}) => {
+  await page.goto("/courses/acting/");
+
+  const actions = page.locator(".request-actions");
+  const requestCta = actions.getByRole("link", {
+    name: "Присоединиться к курсу",
+  });
+
+  await expect(requestCta).toHaveClass(/\bbutton-on-brand\b/);
+  await expect(requestCta).toHaveCSS("background-color", "rgb(251, 243, 160)");
+  await expect(requestCta).toHaveCSS("color", "rgb(220, 94, 53)");
+  await expect(requestCta).toHaveCSS("border-color", "rgb(251, 243, 160)");
+
+  const [actionsBox, ctaBox] = await Promise.all([
+    actions.boundingBox(),
+    requestCta.boundingBox(),
+  ]);
+  expect(Math.abs((actionsBox?.x ?? 0) - (ctaBox?.x ?? 0))).toBeLessThan(1);
+  expect(
+    Math.abs((actionsBox?.width ?? 0) - (ctaBox?.width ?? 0)),
+  ).toBeLessThan(1);
+
+  await requestCta.hover();
+  await expect(requestCta).toHaveCSS("background-color", "rgb(220, 94, 53)");
+  await expect(requestCta).toHaveCSS("color", "rgb(251, 243, 160)");
+  await expect(requestCta).toHaveCSS("border-color", "rgb(251, 243, 160)");
+});
+
 test("updated course copy and offer are rendered from shared content", async ({
   page,
 }) => {
