@@ -25,7 +25,7 @@ test("the shared logo is present in page headers and footers", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator(".hero-logo .brand-logo__mark")).toBeVisible();
+  await expect(page.locator(".hero-logo")).toHaveCount(0);
   await expect(
     page.locator(".site-footer__logo .brand-logo__mark"),
   ).toBeVisible();
@@ -41,7 +41,7 @@ test("shared layout guides align major sections", async ({ page }) => {
   await page.goto("/");
 
   const homeLeftEdges = await page
-    .locator(".hero-logo, .section-heading, .site-footer__logo")
+    .locator(".eyebrow, .section-heading, .site-footer__logo")
     .evaluateAll((elements) =>
       elements.map((element) => element.getBoundingClientRect().left),
     );

@@ -75,13 +75,8 @@
   transform: translateX(-50%);
 }
 
-.hero-logo {
-  grid-column: 1;
-  color: var(--color-paper);
-}
-
 .eyebrow {
-  grid-column: 2 / span 4;
+  grid-column: 1 / span 4;
   max-width: 22.5rem;
   margin: 0;
 }
@@ -378,7 +373,7 @@
   }
 
   .eyebrow {
-    grid-column: 3 / span 7;
+    grid-column: 1 / span 8;
     max-width: 16.25rem;
   }
 
