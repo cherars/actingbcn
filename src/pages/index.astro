@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import CourseCard from "../components/CourseCard.astro";
-import BrandLogo from "../components/BrandLogo.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import scene1 from "../assets/images/hero/scene-1.jpg";
@@ -52,7 +51,6 @@ const structuredData = {
       </div>
       <div class="hero-shade"></div>
       <div class="hero-topbar layout-shell">
-        <BrandLogo class="hero-logo" />
         <p class="eyebrow">Независимый театрально-образовательный проект</p>
         <div class="hero-progress" aria-hidden="true">
           <span>01</span><div></div><span>04</span>
