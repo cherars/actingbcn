@@ -11,6 +11,7 @@
   ],
   "heroImage": "../../assets/images/courses/improv.jpg",
   "heroAlt": "Участники интенсива по импровизации",
+  "cardImagePosition": "center 30%",
   "cardCaption": "Старт 22.09",
   "facts": [
     { "label": "Старт", "lines": ["22.09"], "datetime": "2026-09-22" },
