@@ -21,6 +21,47 @@ test("the home page exposes every course and a working CTA", async ({
   ).toHaveAttribute("href", "#courses");
 });
 
+test("the shared logo is present in page headers and footers", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page.locator(".hero-logo .brand-logo__mark")).toBeVisible();
+  await expect(
+    page.locator(".site-footer__logo .brand-logo__mark"),
+  ).toBeVisible();
+
+  await page.goto("/courses/acting/");
+  await expect(page.locator(".wordmark .brand-logo__mark")).toBeVisible();
+  await expect(
+    page.locator(".site-footer__logo .brand-logo__mark"),
+  ).toBeVisible();
+});
+
+test("shared layout guides align major sections", async ({ page }) => {
+  await page.goto("/");
+
+  const homeLeftEdges = await page
+    .locator(".hero-logo, .section-heading, .site-footer__logo")
+    .evaluateAll((elements) =>
+      elements.map((element) => element.getBoundingClientRect().left),
+    );
+  expect(Math.max(...homeLeftEdges) - Math.min(...homeLeftEdges)).toBeLessThan(
+    1,
+  );
+
+  await page.goto("/courses/acting/");
+  const courseLeftEdges = await page
+    .locator(
+      ".wordmark, .detail-story, .teachers-heading, .request-content, .site-footer__logo",
+    )
+    .evaluateAll((elements) =>
+      elements.map((element) => element.getBoundingClientRect().left),
+    );
+  expect(
+    Math.max(...courseLeftEdges) - Math.min(...courseLeftEdges),
+  ).toBeLessThan(1);
+});
+
 for (const course of coursePaths) {
   test(`${course} course page renders without horizontal overflow`, async ({
     page,

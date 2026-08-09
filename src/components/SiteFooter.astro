@@ -1,5 +1,13 @@
+---
+import BrandLogo from "./BrandLogo.astro";
+---
+
 <footer class="site-footer">
-  <p class="site-footer__text">Актерская Барселона</p>
-  <p class="site-footer__text">Театр начинается с вас</p>
-  <a href="#top">Наверх <span aria-hidden="true">↑</span></a>
+  <div class="site-footer__inner layout-shell layout-grid">
+    <BrandLogo class="site-footer__logo" />
+    <p class="site-footer__text">Театр начинается с вас</p>
+    <a class="site-footer__top" href="#top">
+      Наверх <span aria-hidden="true">↑</span>
+    </a>
+  </div>
 </footer>
