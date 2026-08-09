@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const coursePaths = ["acting", "speech", "improv", "custom"];
+const typeformUrl = "https://form.typeform.com/to/o7LSqGIk";
 
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -43,32 +44,50 @@ test("course facts keep one shared and aligned layout", async ({
     testInfo.project.name !== "desktop-chromium",
     "Desktop alignment contract",
   );
-  await page.goto("/courses/acting/");
+  const layouts = [];
 
-  const rows = await page.locator(".course-facts__list").evaluate((list) => {
-    const terms = Array.from(list.querySelectorAll("dt"));
-    const descriptions = Array.from(list.querySelectorAll("dd"));
-    return terms.map((term, index) => {
-      const termBox = term.getBoundingClientRect();
-      const descriptionBox = descriptions[index].getBoundingClientRect();
-      return {
-        termTop: termBox.top,
-        descriptionTop: descriptionBox.top,
-        termLeft: termBox.left,
-        termRight: termBox.right,
-        descriptionLeft: descriptionBox.left,
-        termFits: term.scrollWidth <= term.clientWidth,
-        whiteSpace: getComputedStyle(term).whiteSpace,
-      };
-    });
-  });
-
-  for (const row of rows) {
-    expect(Math.abs(row.termTop - row.descriptionTop)).toBeLessThan(1);
-    expect(row.descriptionLeft - row.termRight).toBeGreaterThanOrEqual(8);
+  for (const course of ["acting", "speech", "improv"]) {
+    await page.goto(`/courses/${course}/`);
+    const layout = await page
+      .locator(".course-facts__list")
+      .evaluate((list) => {
+        const listBox = list.getBoundingClientRect();
+        const terms = Array.from(list.querySelectorAll("dt"));
+        const descriptions = Array.from(list.querySelectorAll("dd"));
+        return terms.map((term, index) => {
+          const termBox = term.getBoundingClientRect();
+          const descriptionBox = descriptions[index].getBoundingClientRect();
+          return {
+            termTop: termBox.top,
+            descriptionTop: descriptionBox.top,
+            termLeft: termBox.left - listBox.left,
+            termRight: termBox.right - listBox.left,
+            descriptionLeft: descriptionBox.left - listBox.left,
+            termFits: term.scrollWidth <= term.clientWidth,
+            whiteSpace: getComputedStyle(term).whiteSpace,
+          };
+        });
+      });
+    layouts.push(layout);
   }
-  expect(rows[1].termFits).toBe(true);
-  expect(rows[1].whiteSpace).toBe("nowrap");
+
+  for (const rows of layouts) {
+    for (const row of rows) {
+      expect(Math.abs(row.termTop - row.descriptionTop)).toBeLessThan(1);
+      expect(row.descriptionLeft - row.termRight).toBeGreaterThanOrEqual(8);
+    }
+    expect(rows[1].termFits).toBe(true);
+    expect(rows[1].whiteSpace).toBe("nowrap");
+  }
+
+  expect(layouts[1][0].descriptionLeft).toBeCloseTo(
+    layouts[0][0].descriptionLeft,
+    0,
+  );
+  expect(layouts[2][0].descriptionLeft).toBeCloseTo(
+    layouts[0][0].descriptionLeft,
+    0,
+  );
 });
 
 test("navigation and application controls meet the mobile touch target", async ({
@@ -90,8 +109,56 @@ test("navigation and application controls meet the mobile touch target", async (
 
   await expect(page.locator(".teacher-card img")).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /написать в telegram/i }),
-  ).toHaveAttribute("href", "https://t.me/actingbcn");
+    page.getByRole("link", { name: "Присоединиться к курсу" }),
+  ).toHaveAttribute("href", typeformUrl);
+});
+
+for (const course of coursePaths) {
+  test(`${course} uses the shared Typeform and request CTA`, async ({
+    page,
+  }) => {
+    await page.goto(`/courses/${course}/`);
+
+    const factsCta = page.getByRole("link", { name: "Выбрать этот курс" });
+    await expect(factsCta).toHaveAttribute("href", typeformUrl);
+    await expect(factsCta.locator("span")).toHaveCount(0);
+
+    const request = page.locator(".request-section");
+    await expect(request.locator(".section-index")).toHaveCount(0);
+    await expect(request).toContainText(
+      "Оставьте заявку. Мы напишем вам с подробностями и поможем забронировать место.",
+    );
+    await expect(
+      request.getByRole("link", { name: "Присоединиться к курсу" }),
+    ).toHaveAttribute("href", typeformUrl);
+    await expect(
+      request.getByRole("link", { name: "Вернуться к курсам" }),
+    ).toHaveAttribute("href", "/#courses");
+  });
+}
+
+test("updated course copy and offer are rendered from shared content", async ({
+  page,
+}) => {
+  await page.goto("/courses/acting/");
+  await expect(
+    page.getByText("Основные блоки курса", { exact: true }),
+  ).toBeVisible();
+
+  await page.goto("/courses/speech/");
+  await expect(page.locator(".course-offer")).toHaveText(
+    "При бронировании до 30.08 на курс действует скидка 10%.",
+  );
+
+  await page.goto("/courses/custom/");
+  await expect(page.locator(".detail-story")).toContainText(
+    "Это может быть тренинг по раскрепощению или импровизации, практика публичных выступлений, занятие по речи или развлекательная программа — для корпоративного или частного мероприятия.",
+  );
+
+  await page.goto("/");
+  await expect(page.locator(".site-footer")).toContainText(
+    "Театр начинается с вас",
+  );
 });
 
 test("course facts produce a reviewable visual artifact", async ({

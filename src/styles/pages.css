@@ -257,10 +257,7 @@
 
 .request-section {
   display: grid;
-  grid-template-columns: minmax(6rem, 0.5fr) minmax(18rem, 1.4fr) minmax(
-      15rem,
-      0.7fr
-    );
+  grid-template-columns: minmax(18rem, 1.5fr) minmax(15rem, 0.7fr);
   align-items: end;
   padding: var(--section-space) var(--page-gutter);
   background: var(--color-brand);
@@ -276,12 +273,15 @@
 .request-actions {
   display: grid;
   align-items: start;
+  width: 100%;
+  max-width: 28rem;
+  justify-self: end;
   gap: var(--space-3);
 }
 
 .request-back-link {
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 @media (width <= 56.25rem) {
@@ -330,6 +330,11 @@
   .request-section {
     grid-template-columns: 1fr;
     align-items: start;
+  }
+
+  .request-actions {
+    max-width: 100%;
+    justify-self: start;
   }
 }
 

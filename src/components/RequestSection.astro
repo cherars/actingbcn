@@ -1,29 +1,20 @@
----
-interface Props {
-  courseTitle?: string;
-}
-
-const { courseTitle } = Astro.props;
-const message = courseTitle
-  ? `Напишите нам в Telegram название курса «${courseTitle}» и пару слов о себе. Мы ответим с подробностями и поможем забронировать место.`
-  : "Напишите нам в Telegram и расскажите, какой формат вам интересен. Мы поможем выбрать подходящий курс.";
----
-
 <section class="request-section" id="request">
-  <p class="section-index">Следующий шаг</p>
   <div>
     <h2>Готовы попробовать?</h2>
-    <p class="request-copy">{message}</p>
+    <p class="request-copy">
+      Оставьте заявку. Мы напишем вам с подробностями и поможем забронировать
+      место.
+    </p>
   </div>
   <div class="request-actions">
     <a
       class="button button-primary"
-      href="https://t.me/actingbcn"
+      href="https://form.typeform.com/to/o7LSqGIk"
       target="_blank"
       rel="noopener noreferrer"
     >
-      Написать в Telegram <span aria-hidden="true">↗</span>
+      Присоединиться к курсу
     </a>
-    <a class="request-back-link" href="/#courses">Посмотреть другие курсы</a>
+    <a class="request-back-link" href="/#courses">Вернуться к курсам</a>
   </div>
 </section>
