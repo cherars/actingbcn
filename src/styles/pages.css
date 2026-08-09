@@ -235,7 +235,7 @@
 }
 
 .detail-story {
-  grid-column: 1 / span 7;
+  grid-column: 1 / span 6;
 }
 
 .detail-story > p:not(.section-index) {
@@ -289,6 +289,22 @@
   text-align: left;
 }
 
+@media (width <= 75rem) {
+  .detail-body {
+    row-gap: var(--space-6);
+  }
+
+  .detail-story,
+  .course-facts {
+    grid-column: 1 / -1;
+  }
+
+  .course-facts {
+    position: static;
+    margin-top: var(--space-4);
+  }
+}
+
 @media (width <= 56.25rem) {
   .detail-hero {
     display: block;
@@ -305,20 +321,6 @@
 
   .detail-title h1 {
     font-size: clamp(2.875rem, 10vw, 4.5rem);
-  }
-
-  .detail-body {
-    row-gap: var(--space-6);
-  }
-
-  .detail-story,
-  .course-facts {
-    grid-column: 1 / -1;
-  }
-
-  .course-facts {
-    position: static;
-    margin-top: var(--space-4);
   }
 }
 

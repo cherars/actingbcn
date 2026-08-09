@@ -37,7 +37,9 @@ test("the shared logo is present in page headers and footers", async ({
   ).toBeVisible();
 });
 
-test("shared layout guides align major sections", async ({ page }) => {
+test("shared layout guides align major sections", async ({
+  page,
+}, testInfo) => {
   await page.goto("/");
 
   const homeLeftEdges = await page
@@ -60,6 +62,32 @@ test("shared layout guides align major sections", async ({ page }) => {
   expect(
     Math.max(...courseLeftEdges) - Math.min(...courseLeftEdges),
   ).toBeLessThan(1);
+
+  if (testInfo.project.name === "desktop-chromium") {
+    await page.goto("/");
+    const cardBoxes = await page.locator(".course-card").evaluateAll((cards) =>
+      cards.map((card) => {
+        const box = card.getBoundingClientRect();
+        return { top: box.top, bottom: box.bottom };
+      }),
+    );
+    expect(cardBoxes[2].top - cardBoxes[0].bottom).toBeGreaterThanOrEqual(20);
+
+    await page.goto("/courses/acting/");
+    const detailWidths = await page.evaluate(() => ({
+      story: document.querySelector(".detail-story")?.getBoundingClientRect()
+        .width,
+      facts: document.querySelector(".course-facts")?.getBoundingClientRect()
+        .width,
+      factValue: document
+        .querySelector(".course-facts dd")
+        ?.getBoundingClientRect().width,
+    }));
+    expect(
+      (detailWidths.facts ?? 0) / (detailWidths.story ?? 1),
+    ).toBeGreaterThan(0.75);
+    expect(detailWidths.factValue).toBeGreaterThan(180);
+  }
 });
 
 for (const course of coursePaths) {
