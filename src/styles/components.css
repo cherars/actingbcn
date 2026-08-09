@@ -213,7 +213,7 @@
   min-width: 0;
   padding: clamp(1.5rem, 4vw, 3rem);
   background: var(--color-paper);
-  grid-column: 9 / -1;
+  grid-column: 8 / -1;
 }
 
 .course-facts__list {

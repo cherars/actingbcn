@@ -62,7 +62,7 @@ img {
 .layout-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--layout-gap);
+  gap: var(--layout-gap);
 }
 
 :focus-visible {
