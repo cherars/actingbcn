@@ -11,7 +11,10 @@ const { course, number } = Astro.props;
 const isLight = course.id === "custom";
 ---
 
-<article class:list={["course-card", { "course-card--light": isLight }]}>
+<article
+  class:list={["course-card", { "course-card--light": isLight }]}
+  style={`--course-image-position: ${course.data.cardImagePosition}`}
+>
   <div class="course-image-wrap">
     <Image
       class="course-image"

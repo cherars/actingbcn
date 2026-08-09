@@ -33,6 +33,7 @@ const courses = defineCollection({
       story: z.array(z.string()).min(1),
       heroImage: image(),
       heroAlt: z.string().default(""),
+      cardImagePosition: z.string().default("center"),
       cardCaption: z.string(),
       facts: z.array(factSchema).min(1),
       offer: z.string().optional(),

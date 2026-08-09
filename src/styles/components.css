@@ -115,6 +115,7 @@
 
 .course-image {
   object-fit: cover;
+  object-position: var(--course-image-position, center);
   transition: transform var(--transition-image);
 }
 
