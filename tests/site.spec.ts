@@ -236,18 +236,17 @@ test("request CTA uses the shared on-brand variant and follows its column", asyn
   await expect(requestCta).toHaveCSS("border-color", "rgb(251, 243, 160)");
 });
 
-test("updated course copy and offer are rendered from shared content", async ({
+test("updated course copy is rendered without expired offers", async ({
   page,
 }) => {
   await page.goto("/courses/acting/");
   await expect(
     page.getByText("Основные блоки курса", { exact: true }),
   ).toBeVisible();
+  await expect(page.locator(".course-offer")).toHaveCount(0);
 
   await page.goto("/courses/speech/");
-  await expect(page.locator(".course-offer")).toHaveText(
-    "При бронировании до 30.08 на курс действует скидка 10%.",
-  );
+  await expect(page.locator(".course-offer")).toHaveCount(0);
 
   await page.goto("/courses/custom/");
   await expect(page.locator(".detail-story")).toContainText(
